@@ -4,7 +4,8 @@ import "./App.css";
 
 const App = () => {
   const [users, setUsers] = useState([]);
-
+  const [usersName, setUsersName] = useState();
+  const [usersPassword, setUsersPassword] = useState();
   //ON LOad
 
   // useEffect(() => {
@@ -25,11 +26,21 @@ const App = () => {
       }
     });
   };
+  const authUser = (e) => {
+   axios.post('https://dummyjson.com/auth/login', {
+        
+    username: 'emilys',
+    password: 'emilyspass',
+    expiresInMins: 30, // optional, defaults to 60
+  })
+    .then(res => {console.log(res)})
+    
+  };
   return (
     <div className="App">
       <header className="App-header">
         <p>Home Page Branch : Prashant</p>
-        <button onClick={loadUser}>{"Load User"}</button>
+        <button onClick={authUser}>{"Load User"}</button>
         {/* {users?.map((userObj) => {
           return <div>{userObj?.name}</div>;
         })} */}
