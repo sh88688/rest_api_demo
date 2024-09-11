@@ -1,21 +1,19 @@
-
-// SignIn.js
-import React from 'react';
+import React,{useState} from 'react';
 import { TextField, Button, Box, Typography, Container, Avatar, Paper, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-const SignIn = () => {
+const SignIn = ({authUser}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+   authUser(username,password);
+    };
+  
 
   return (
-    <Box
+    
+    <Box 
       sx={{
         height: '100vh',
         backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -51,6 +49,8 @@ const SignIn = () => {
                 autoComplete="email"
                 autoFocus
                 sx={{ backgroundColor: 'white', borderRadius: 1 }}
+                value={username} // passing username here 
+                onChange={(e) => setUsername(e.target.value)} // for changing the current input
               />
               <TextField
                 margin="normal"
@@ -62,6 +62,8 @@ const SignIn = () => {
                 id="password"
                 autoComplete="current-password"
                 sx={{ backgroundColor: 'white', borderRadius: 1 }}
+                value={password} // passing password here
+                onChange={(e) => setPassword(e.target.value)} // for changing the current pass input
               />
               <Button
                 type="submit"
@@ -85,6 +87,7 @@ const SignIn = () => {
         </Paper>
       </Container>
     </Box>
+    
   );
 };
 
