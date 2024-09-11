@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
+import SignIn from './signIn';
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -37,20 +38,9 @@ const App = () => {
     
   };
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Home Page Branch : Prashant</p>
-        <button onClick={authUser}>{"Load User"}</button>
-        {/* {users?.map((userObj) => {
-          return <div>{userObj?.name}</div>;
-        })} */}
-        <ol>
-          {users?.map((userObj) => {
-            return <li>{userObj?.name}</li>;
-          })}
-        </ol>
-      </header>
-    </div>
+      <div>
+       <SignIn />
+      </div>
   );
 };
 
