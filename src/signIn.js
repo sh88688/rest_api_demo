@@ -7,6 +7,7 @@ const SignIn = ({authUser}) => {
   const [password, setPassword] = useState('');
   const handleSubmit = (event) => {
     event.preventDefault();
+
    authUser(username,password);
     };
   

@@ -20,11 +20,11 @@ const App = () => {
         expiresInMins: 30, 
     })
     .then(res => {
-      console.log("Login successful", res);
+      console.log("Login successful", res.data);
       // Handle successful login
     })
     .catch(err => {
-      console.error("Login failed", err);
+      console.error("Login failed", err.message);
       // Handle error 
     });
   };
