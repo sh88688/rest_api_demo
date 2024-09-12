@@ -32,7 +32,6 @@ const SignIn = ({ authUser, errorMessage }) => {
         alignItems: "center",
       }}
     >
-      {errorMessage && <Alert severity={"error"}>{errorMessage}</Alert>}
       <Container component="main" maxWidth="xs">
         <Paper elevation={6} sx={{ padding: 4, borderRadius: 4 }}>
           <Box
@@ -58,10 +57,9 @@ const SignIn = ({ authUser, errorMessage }) => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="User Name"
+                name="username"
                 autoFocus
                 sx={{ backgroundColor: "white", borderRadius: 1 }}
                 value={username} // passing username here
@@ -90,12 +88,9 @@ const SignIn = ({ authUser, errorMessage }) => {
                 Sign In
               </Button>
               <Box display="flex" justifyContent="space-between">
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                {errorMessage && (
+                  <Alert severity={"error"}>{errorMessage}</Alert>
+                )}
               </Box>
             </Box>
           </Box>
