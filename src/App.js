@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import SignIn from './signIn';
+import { Alert} from '@mui/material';
+
 
 const App = () => {
-
+  const [message, setMessage] = useState(""); // Message to display
+  const [alertType, setAlertType] = useState(""); // Alert type: "success" or "error"
   /*const loadUser = (e) => {
     axios.get(`https://jsonplaceholder.typicode.com/users`).then((result) => {
       console.log("result ==> ", result?.data);
@@ -21,16 +24,26 @@ const App = () => {
     })
     .then(res => {
       console.log("Login successful", res.data);
-      // Handle successful login
+      setMessage("Login successful!"); 
+      setAlertType("success"); 
+      
     })
     .catch(err => {
       console.error("Login failed", err.message);
-      // Handle error 
+      setMessage("Login failed. Please check your credentials."); 
+      setAlertType("error");
+      
     });
   };
   return (
       <div>
        <SignIn authUser={authUser} />
+       {/* Conditionally render Alert only if there's a 'message' (truthy(not null or undef))*/}
+      {message && (
+        <Alert severity={alertType}>
+          {message}
+        </Alert>
+      )}
       </div>
   );
 };
