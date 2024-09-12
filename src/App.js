@@ -26,7 +26,7 @@ const App = () => {
       .then((res) => {
         console.log("Login successful", res?.data);
         setErrorMessage("");
-        setUserData(res?.data);
+        setUserData(JSON.stringify(res?.data));
       })
       .catch((err) => {
         console.error("Login failed", err?.message);
