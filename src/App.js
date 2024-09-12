@@ -3,14 +3,17 @@ import axios from "axios";
 import "./App.css";
 import SignIn from "./signIn";
 import { useLocalStorageState } from "@toolpad/core";
-import Drawer from './appdrawer'
+import Dashboard from "./dashboard";
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
+  const [isLoading, setLoading] = useState(false);
   const [userData, setUserData] = useLocalStorageState("user-data", null);
   const parsedData = JSON.parse(userData);
-  
+
   const authUser = (username, password) => {
+    //start loading
+    setLoading(true);
     axios
       .post("https://dummyjson.com/auth/login", {
         username: username,
@@ -25,14 +28,29 @@ const App = () => {
       .catch((err) => {
         console.error("Login failed", err?.message);
         setErrorMessage("Login failed. Please check your credentials.");
+      })
+      .finally(() => {
+        //stop loading
+        setLoading(false);
       });
+  };
+  const logoutUser = () => {
+    setUserData(null);
   };
   useEffect(() => {
     console.log(userData, "userdata");
   }, []);
   return (
     <div>
-      {parsedData?<Drawer/>:<SignIn authUser={authUser} errorMessage={errorMessage} />}
+      {parsedData ? (
+        <Dashboard logoutUser={logoutUser} userInfo={parsedData} />
+      ) : (
+        <SignIn
+          authUser={authUser}
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+        />
+      )}
     </div>
   );
 };
