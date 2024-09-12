@@ -9,15 +9,15 @@ import {
   Paper,
   Link,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
 
-const SignIn = ({ authUser, errorMessage }) => {
+const SignIn = ({ authUser, isLoading, errorMessage }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-
     authUser(username, password);
   };
 
@@ -25,14 +25,14 @@ const SignIn = ({ authUser, errorMessage }) => {
     <Box
       sx={{
         height: "100vh",
-        backgroundImage: "url(https://source.unsplash.com/random)",
+        backgroundImage: "url(https://picsum.photos/1300/768)",
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="sign-in-form">
         <Paper elevation={6} sx={{ padding: 4, borderRadius: 4 }}>
           <Box
             sx={{
@@ -41,12 +41,35 @@ const SignIn = ({ authUser, errorMessage }) => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar
+              sx={{
+                m: 1,
+                background:
+                  "linear-gradient(145deg, rgba(242,33,33,0.9277836134453782) 9%, rgba(88,159,255,0.905374649859944) 100%)",
+              }}
+            >
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign In
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                style={{ width: "56px", height: "56px" }}
+                src="https://cryptologos.cc/logos/uniswap-uni-logo.png"
+              />
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{ fontFamily: "Playwrite CU, cursive" }}
+              >
+                {"Stella"}
+              </Typography>
+            </Box>
             <Box
               component="form"
               onSubmit={handleSubmit}
@@ -61,7 +84,8 @@ const SignIn = ({ authUser, errorMessage }) => {
                 label="User Name"
                 name="username"
                 autoFocus
-                sx={{ backgroundColor: "white", borderRadius: 1 }}
+                autoComplete="off"
+                sx={{ backgroundColor: "white" }}
                 value={username} // passing username here
                 onChange={(e) => setUsername(e.target.value)} // for changing the current input
               />
@@ -73,7 +97,7 @@ const SignIn = ({ authUser, errorMessage }) => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                autoComplete="off"
                 sx={{ backgroundColor: "white", borderRadius: 1 }}
                 value={password} // passing password here
                 onChange={(e) => setPassword(e.target.value)} // for changing the current pass input
@@ -82,10 +106,22 @@ const SignIn = ({ authUser, errorMessage }) => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
-                sx={{ mt: 3, mb: 2, py: 1.5 }}
+                color="secondary"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  py: 1.5,
+                  color: "white",
+                  borderRadius: "30px",
+                  background:
+                    "linear-gradient(145deg, rgba(242,33,33,0.9277836134453782) 9%, rgba(88,159,255,0.905374649859944) 100%)",
+                }}
               >
-                Sign In
+                {isLoading ? (
+                  <CircularProgress size={25} color="inherit" />
+                ) : (
+                  "Sign In"
+                )}
               </Button>
               <Box display="flex" justifyContent="space-between">
                 {errorMessage && (
