@@ -3,19 +3,13 @@ import axios from "axios";
 import "./App.css";
 import SignIn from "./signIn";
 import { useLocalStorageState } from "@toolpad/core";
+import Drawer from './appdrawer'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
-  const [userData, setUserData] = useLocalStorageState("user-data", {});
-
-  /*const loadUser = (e) => {
-    axios.get(`https://jsonplaceholder.typicode.com/users`).then((result) => {
-      console.log("result ==> ", result?.data);
-      if (result?.data?.length) {
-        setUsers(result?.data);
-      }
-    });
-  };*/
+  const [userData, setUserData] = useLocalStorageState("user-data", null);
+  const parsedData = JSON.parse(userData);
+  
   const authUser = (username, password) => {
     axios
       .post("https://dummyjson.com/auth/login", {
@@ -26,7 +20,7 @@ const App = () => {
       .then((res) => {
         console.log("Login successful", res?.data);
         setErrorMessage("");
-        setUserData(res?.data);
+        setUserData(JSON.stringify(res?.data));
       })
       .catch((err) => {
         console.error("Login failed", err?.message);
@@ -38,7 +32,7 @@ const App = () => {
   }, []);
   return (
     <div>
-      <SignIn authUser={authUser} errorMessage={errorMessage} />
+      {parsedData?<Drawer/>:<SignIn authUser={authUser} errorMessage={errorMessage} />}
     </div>
   );
 };
