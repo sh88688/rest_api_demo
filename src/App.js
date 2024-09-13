@@ -9,7 +9,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
   const [isLoading, setLoading] = useState(false);
   const [userData, setUserData] = useLocalStorageState("user-data", null);
-  const parsedData = JSON.parse(userData);
+  const isLoggedIn = JSON.parse(userData);
 
   const authUser = (username, password) => {
     //start loading
@@ -42,8 +42,8 @@ const App = () => {
   }, []);
   return (
     <div>
-      {parsedData ? (
-        <Dashboard logoutUser={logoutUser} userInfo={parsedData} />
+      {isLoggedIn ? (
+        <Dashboard logoutUser={logoutUser} userInfo={isLoggedIn} />
       ) : (
         <SignIn
           authUser={authUser}

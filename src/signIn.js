@@ -81,7 +81,7 @@ const SignIn = ({ authUser, isLoading, errorMessage }) => {
                 required
                 fullWidth
                 id="username"
-                label="User Name"
+                label="Username"
                 name="username"
                 autoFocus
                 autoComplete="off"
