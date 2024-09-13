@@ -12,6 +12,7 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
+import backgroundImage from './assets/background4.jpg';
 
 const SignIn = ({ authUser, isLoading, errorMessage }) => {
   const [username, setUsername] = useState("");
@@ -25,7 +26,7 @@ const SignIn = ({ authUser, isLoading, errorMessage }) => {
     <Box
       sx={{
         height: "100vh",
-        backgroundImage: "url(https://picsum.photos/1300/768)",
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "center",

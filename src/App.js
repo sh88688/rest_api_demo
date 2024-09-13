@@ -7,7 +7,7 @@ import Dashboard from "./dashboard";
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(null);
   const [userData, setUserData] = useLocalStorageState("user-data", null);
   const isLoggedIn = JSON.parse(userData);
 
@@ -39,15 +39,15 @@ const App = () => {
     setTimeout(() => {
       setUserData(null);
       setLoading(false);
-    }, 2000);
+    }, 1500);
   };
   useEffect(() => {
     console.log(userData, "userdata");
   }, []);
   return (
     <div>
-      {parsedData ? (
-        <Dashboard logoutUser={logoutUser} userInfo={parsedData} />
+      {isLoggedIn ? (
+        <Dashboard logoutUser={logoutUser} userInfo={isLoggedIn} isLoading={isLoading}/>
       ) : (
         <SignIn
           authUser={authUser}

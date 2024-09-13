@@ -13,16 +13,19 @@ import {
   Box,
   ListItemAvatar,
   ListItemIcon,
+  CircularProgress,
+  circularProgressClasses,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
+import { ExpandLess, ExpandMore, Whatshot } from "@mui/icons-material";
+import CategoryIcon from "@mui/icons-material/Category";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
+import axios from "axios";
 
 const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
   const [open, setOpen] = useState(false);
@@ -30,10 +33,30 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
 
   const handleCategoryToggle = () => {
     setOpenCategory(!openCategory);
+    setCategoryLoading(true);
   };
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
+  };
+
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+  const [categoryLoading, setCategoryLoading] = useState(null);
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://dummyjson.com/products/categories"
+      );
+      setCategories(response.data);
+      setError(null);
+    } catch (err) {
+      setError((err) => {
+        console.log("Error in fetching data", err?.message);
+      });
+    } finally {
+      setCategoryLoading(false);
+    }
   };
 
   return (
@@ -68,7 +91,7 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {isLoading && <LinearProgress color="secondary" />}
+      
       {/* Drawer */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
@@ -104,24 +127,33 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
             </ListItem>
             <ListItem onClick={handleCategoryToggle} button>
               <ListItemIcon>
-                <ContactMailIcon />
+                <CategoryIcon />
               </ListItemIcon>
               <ListItemText primary="Categories" />
-              {openCategory ? <ExpandLess /> : <ExpandMore />}
+              {categoryLoading ? (
+                <CircularProgress size={15} color="inherit" />
+              ) : openCategory ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              )}
             </ListItem>
 
-            <Collapse in={openCategory} timeout="auto" unmountOnExit>
+            <Collapse
+              in={openCategory}
+              onClick={fetchCategories()}
+              timeout="auto"
+              unmountOnExit
+            >
               <List component="div" disablePadding>
-                {["mobiles", "laptops", "Home Appliances"]?.map(
-                  (category, index) => (
-                    <ListItem sx={{ pl: 4 }} button>
-                      <ListItemIcon>
-                        <StarBorder />
-                      </ListItemIcon>
-                      <ListItemText primary={category} />
-                    </ListItem>
-                  )
-                )}
+                {categories?.map((category) => (
+                  <ListItem sx={{ pl: 4 }} button>
+                    <ListItemIcon>
+                      <Whatshot />
+                    </ListItemIcon>
+                    <ListItemText primary={category.name} />
+                  </ListItem>
+                ))}
               </List>
             </Collapse>
           </List>
@@ -138,6 +170,9 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" />
+              {isLoading && (
+                <CircularProgress size={15} color="secondary" />
+              )}
             </ListItem>
           </List>
         </Box>
