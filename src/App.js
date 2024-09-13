@@ -35,7 +35,11 @@ const App = () => {
       });
   };
   const logoutUser = () => {
-    setUserData(null);
+    setLoading(true);
+    setTimeout(() => {
+      setUserData(null);
+      setLoading(false);
+    }, 2000);
   };
   useEffect(() => {
     console.log(userData, "userdata");
@@ -43,7 +47,11 @@ const App = () => {
   return (
     <div>
       {parsedData ? (
-        <Dashboard logoutUser={logoutUser} userInfo={parsedData} />
+        <Dashboard
+          isLoading={isLoading}
+          logoutUser={logoutUser}
+          userInfo={parsedData}
+        />
       ) : (
         <SignIn
           authUser={authUser}

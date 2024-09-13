@@ -1,3 +1,6 @@
 .MuiListItem-root {
   cursor: pointer;
 }
+.MuiToolbar-root {
+  color: black;
+}

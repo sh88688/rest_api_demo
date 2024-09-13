@@ -17,12 +17,20 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
+import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LinearProgress from "@mui/material/LinearProgress";
+import Collapse from "@mui/material/Collapse";
 
-const Dashboard = ({ logoutUser, userInfo }) => {
+const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
   const [open, setOpen] = useState(false);
+  const [openCategory, setOpenCategory] = React.useState(false);
+
+  const handleCategoryToggle = () => {
+    setOpenCategory(!openCategory);
+  };
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
@@ -60,15 +68,10 @@ const Dashboard = ({ logoutUser, userInfo }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-
+      {isLoading && <LinearProgress color="secondary" />}
       {/* Drawer */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
+        <Box sx={{ width: 250 }} role="presentation">
           {/* Profile Section */}
           <Box sx={{ padding: 2, display: "flex", alignItems: "center" }}>
             <Avatar
@@ -99,12 +102,28 @@ const Dashboard = ({ logoutUser, userInfo }) => {
               </ListItemIcon>
               <ListItemText primary="About" />
             </ListItem>
-            <ListItem button>
+            <ListItem onClick={handleCategoryToggle} button>
               <ListItemIcon>
                 <ContactMailIcon />
               </ListItemIcon>
-              <ListItemText primary="Contact" />
+              <ListItemText primary="Categories" />
+              {openCategory ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
+
+            <Collapse in={openCategory} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {["mobiles", "laptops", "Home Appliances"]?.map(
+                  (category, index) => (
+                    <ListItem sx={{ pl: 4 }} button>
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary={category} />
+                    </ListItem>
+                  )
+                )}
+              </List>
+            </Collapse>
           </List>
           <Divider />
           <List>
