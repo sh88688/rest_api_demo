@@ -7,9 +7,9 @@ import Dashboard from "./dashboard";
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(null);
   const [userData, setUserData] = useLocalStorageState("user-data", null);
-  const parsedData = JSON.parse(userData);
+  const isLoggedIn = JSON.parse(userData);
 
   const authUser = (username, password) => {
     //start loading
@@ -39,19 +39,15 @@ const App = () => {
     setTimeout(() => {
       setUserData(null);
       setLoading(false);
-    }, 2000);
+    }, 1500);
   };
   useEffect(() => {
     console.log(userData, "userdata");
   }, []);
   return (
     <div>
-      {parsedData ? (
-        <Dashboard
-          isLoading={isLoading}
-          logoutUser={logoutUser}
-          userInfo={parsedData}
-        />
+      {isLoggedIn ? (
+        <Dashboard logoutUser={logoutUser} userInfo={isLoggedIn} isLoading={isLoading}/>
       ) : (
         <SignIn
           authUser={authUser}
