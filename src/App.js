@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import SignIn from "./signIn";
+import SignUp from "./signUp";
 import { useLocalStorageState } from "@toolpad/core";
 import Dashboard from "./dashboard";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import { Navigate } from "react-router-dom";
+
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
@@ -33,6 +38,7 @@ const App = () => {
         //stop loading
         setLoading(false);
       });
+
   };
   const logoutUser = () => {
     setLoading(true);
@@ -45,17 +51,42 @@ const App = () => {
     console.log(userData, "userdata");
   }, []);
   return (
-    <div>
-      {isLoggedIn ? (
-        <Dashboard logoutUser={logoutUser} userInfo={isLoggedIn} isLoading={isLoading}/>
-      ) : (
-        <SignIn
-          authUser={authUser}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
+    <Router>
+      <Routes>
+        <Route
+          path="/signIn"
+          element={
+            <SignIn
+              authUser={authUser}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+            />
+          }
         />
-      )}
-    </div>
+        <Route
+          path="/signUp"
+          element={
+            <SignUp
+             // registerUser={registerUser}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+            />
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute
+              element={<Dashboard logoutUser={logoutUser} />}
+              isLoggedIn={isLoggedIn}
+              isLoading={isLoading}
+            />
+          }
+        />
+        {/* Add a route for not found pages */}
+        <Route path="*" element={<Navigate to="/signIn" />} />
+      </Routes>
+    </Router>
   );
 };
 

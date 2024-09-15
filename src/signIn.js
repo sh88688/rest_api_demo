@@ -12,7 +12,8 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
-import backgroundImage from './assets/background4.jpg';
+import backgroundImage from "./assets/background4.jpg";
+
 
 const SignIn = ({ authUser, isLoading, errorMessage }) => {
   const [username, setUsername] = useState("");
@@ -129,6 +130,9 @@ const SignIn = ({ authUser, isLoading, errorMessage }) => {
                   <Alert severity={"error"}>{errorMessage}</Alert>
                 )}
               </Box>
+              <Typography variant="body2" align="center">
+                Don't have an account? <Link to="/signUp">Sign Up</Link>
+              </Typography>
             </Box>
           </Box>
         </Paper>
