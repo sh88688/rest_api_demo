@@ -23,26 +23,34 @@ import { ExpandLess, ExpandMore, Whatshot } from "@mui/icons-material";
 import CategoryIcon from "@mui/icons-material/Category";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
 import axios from "axios";
+import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
+import { useNavigate } from "react-router-dom";
 
-const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
+const Dashboard = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [openCategory, setOpenCategory] = React.useState(false);
+  const [isLoggingOut, setLoggingOut] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+  const [categoryLoading, setCategoryLoading] = useState(null);
+  const userData = getLocalStorageItem("user-data", true);
 
   const handleCategoryToggle = () => {
-    setOpenCategory(!openCategory);
-    setCategoryLoading(true);
+    if (!categories?.length) {
+      fetchCategories();
+      setCategoryLoading(true);
+    } else {
+      setOpenCategory(!openCategory);
+    }
   };
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
   };
 
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [categoryLoading, setCategoryLoading] = useState(null);
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
@@ -55,8 +63,20 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
         console.log("Error in fetching data", err?.message);
       });
     } finally {
-      setCategoryLoading(false);
+      setTimeout(() => {
+        setCategoryLoading(false);
+        setOpenCategory(!openCategory);
+      }, 1000);
     }
+  };
+
+  const logoutUser = () => {
+    setLoggingOut(true);
+    setTimeout(() => {
+      setLocalStorageItem("user-data", null);
+      setLoggingOut(false);
+      navigate("/signIn");
+    }, 1500);
   };
 
   return (
@@ -91,7 +111,7 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-      
+
       {/* Drawer */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
@@ -99,14 +119,14 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
           <Box sx={{ padding: 2, display: "flex", alignItems: "center" }}>
             <Avatar
               alt="Profile Picture"
-              src={userInfo?.image}
+              src={userData?.image}
               sx={{ width: 56, height: 56 }}
               variant="circular"
             />
             <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="h6">{`${userInfo?.firstName || ""} ${userInfo?.lastName || ""}`}</Typography>
+              <Typography variant="h6">{`${userData?.firstName || ""} ${userData?.lastName || ""}`}</Typography>
               <Typography variant="body2" color="textSecondary">
-                <b>{userInfo?.username || ""}</b>
+                <b>{userData?.username || ""}</b>
               </Typography>
             </Box>
           </Box>
@@ -138,13 +158,7 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
                 <ExpandMore />
               )}
             </ListItem>
-
-            <Collapse
-              in={openCategory}
-              onClick={fetchCategories()}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openCategory} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {categories?.map((category) => (
                   <ListItem sx={{ pl: 4 }} button>
@@ -170,9 +184,7 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" />
-              {isLoading && (
-                <CircularProgress size={15} color="secondary" />
-              )}
+              {isLoggingOut && <CircularProgress size={15} color="secondary" />}
             </ListItem>
           </List>
         </Box>
