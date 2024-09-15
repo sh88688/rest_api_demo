@@ -23,27 +23,34 @@ import { ExpandLess, ExpandMore, Whatshot } from "@mui/icons-material";
 import CategoryIcon from "@mui/icons-material/Category";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
 import axios from "axios";
+import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
+import { useNavigate } from "react-router-dom";
 
-const Dashboard = ({ userData, setUserData }) => {
+const Dashboard = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [openCategory, setOpenCategory] = React.useState(false);
-  const [isLoggingOut,setLoggingOut]=useState(null);
+  const [isLoggingOut, setLoggingOut] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+  const [categoryLoading, setCategoryLoading] = useState(null);
+  const userData = getLocalStorageItem("user-data", true);
 
   const handleCategoryToggle = () => {
-    setOpenCategory(!openCategory);
-    setCategoryLoading(true);
+    if (!categories?.length) {
+      fetchCategories();
+      setCategoryLoading(true);
+    } else {
+      setOpenCategory(!openCategory);
+    }
   };
 
   const toggleDrawer = (open) => () => {
     setOpen(open);
   };
 
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [categoryLoading, setCategoryLoading] = useState(null);
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
@@ -56,15 +63,19 @@ const Dashboard = ({ userData, setUserData }) => {
         console.log("Error in fetching data", err?.message);
       });
     } finally {
-      setCategoryLoading(false);
+      setTimeout(() => {
+        setCategoryLoading(false);
+        setOpenCategory(!openCategory);
+      }, 1000);
     }
   };
 
   const logoutUser = () => {
     setLoggingOut(true);
     setTimeout(() => {
-      setUserData(null);
+      setLocalStorageItem("user-data", null);
       setLoggingOut(false);
+      navigate("/signIn");
     }, 1500);
   };
 
@@ -100,7 +111,7 @@ const Dashboard = ({ userData, setUserData }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-      
+
       {/* Drawer */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
@@ -147,13 +158,7 @@ const Dashboard = ({ userData, setUserData }) => {
                 <ExpandMore />
               )}
             </ListItem>
-
-            <Collapse
-              in={openCategory}
-              onClick={fetchCategories()}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openCategory} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {categories?.map((category) => (
                   <ListItem sx={{ pl: 4 }} button>
@@ -179,9 +184,7 @@ const Dashboard = ({ userData, setUserData }) => {
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" />
-              {isLoggingOut && (
-                <CircularProgress size={15} color="secondary" />
-              )}
+              {isLoggingOut && <CircularProgress size={15} color="secondary" />}
             </ListItem>
           </List>
         </Box>

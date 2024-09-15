@@ -8,13 +8,12 @@ import {
   Avatar,
   Paper,
 } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { Alert } from "@mui/material";
 import backgroundImage from "./assets/background4.jpg";
 import { Link } from "react-router-dom";
 
-const SignUp = ({ registerUser, isLoading, errorMessage }) => {
+const SignUp = ({ registerUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -140,9 +139,9 @@ const SignUp = ({ registerUser, isLoading, errorMessage }) => {
                     "linear-gradient(145deg, rgba(242,33,33,0.9277836134453782) 9%, rgba(88,159,255,0.905374649859944) 100%)",
                 }}
               >
-                  Sign Up
+                Sign Up
               </Button>
-              
+
               <Typography variant="body2" align="center">
                 Already a user? <Link to="/signIn">Sign In</Link>
               </Typography>

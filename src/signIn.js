@@ -8,14 +8,43 @@ import {
   Avatar,
   Paper,
 } from "@mui/material";
+import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
 import backgroundImage from "./assets/background4.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
 
+const SignIn = () => {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(""); // Message to display
+  const [isLoading, setLoading] = useState(null);
 
-const SignIn = ({ authUser, isLoading, errorMessage }) => {
+  const authUser = (username, password) => {
+    //start loading
+    setLoading(true);
+    axios
+      .post("https://dummyjson.com/auth/login", {
+        username: username,
+        password: password,
+        expiresInMins: 30,
+      })
+      .then((res) => {
+        console.log("Login successful", res?.data);
+        setErrorMessage("");
+        setLocalStorageItem("user-data", res?.data, true);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.error("Login failed", err?.message);
+        setErrorMessage("Login failed. Please check your credentials.");
+      })
+      .finally(() => {
+        //stop loading
+        setLoading(false);
+      });
+  };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (event) => {
