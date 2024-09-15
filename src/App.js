@@ -14,7 +14,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Message to display
   const [isLoading, setLoading] = useState(null);
   const [userData, setUserData] = useLocalStorageState("user-data", null);
-  const isLoggedIn = JSON.parse(userData);
+  const isLoggedIn = Boolean(userData);
 
   const authUser = (username, password) => {
     //start loading
@@ -40,13 +40,7 @@ const App = () => {
       });
 
   };
-  const logoutUser = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setUserData(null);
-      setLoading(false);
-    }, 1500);
-  };
+ 
   useEffect(() => {
     console.log(userData, "userdata");
   }, []);
@@ -77,7 +71,7 @@ const App = () => {
           path="/dashboard"
           element={
             <PrivateRoute
-              element={<Dashboard logoutUser={logoutUser} />}
+              element={<Dashboard userData={userData} setUserData={setUserData} />}
               isLoggedIn={isLoggedIn}
               isLoading={isLoading}
             />

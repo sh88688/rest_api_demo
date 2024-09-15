@@ -27,9 +27,10 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
 import axios from "axios";
 
-const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
+const Dashboard = ({ userData, setUserData }) => {
   const [open, setOpen] = useState(false);
   const [openCategory, setOpenCategory] = React.useState(false);
+  const [isLoggingOut,setLoggingOut]=useState(null);
 
   const handleCategoryToggle = () => {
     setOpenCategory(!openCategory);
@@ -57,6 +58,14 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
     } finally {
       setCategoryLoading(false);
     }
+  };
+
+  const logoutUser = () => {
+    setLoggingOut(true);
+    setTimeout(() => {
+      setUserData(null);
+      setLoggingOut(false);
+    }, 1500);
   };
 
   return (
@@ -99,14 +108,14 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
           <Box sx={{ padding: 2, display: "flex", alignItems: "center" }}>
             <Avatar
               alt="Profile Picture"
-              src={userInfo?.image}
+              src={userData?.image}
               sx={{ width: 56, height: 56 }}
               variant="circular"
             />
             <Box sx={{ marginLeft: 2 }}>
-              <Typography variant="h6">{`${userInfo?.firstName || ""} ${userInfo?.lastName || ""}`}</Typography>
+              <Typography variant="h6">{`${userData?.firstName || ""} ${userData?.lastName || ""}`}</Typography>
               <Typography variant="body2" color="textSecondary">
-                <b>{userInfo?.username || ""}</b>
+                <b>{userData?.username || ""}</b>
               </Typography>
             </Box>
           </Box>
@@ -170,7 +179,7 @@ const Dashboard = ({ logoutUser, userInfo, isLoading }) => {
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" />
-              {isLoading && (
+              {isLoggingOut && (
                 <CircularProgress size={15} color="secondary" />
               )}
             </ListItem>
