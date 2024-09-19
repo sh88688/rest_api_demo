@@ -1,7 +1,7 @@
 import React from "react";
-import SignIn from "./signIn";
-import SignUp from "./signUp";
-import Dashboard from "./dashboard";
+import SignIn from "./pages/signin/signIn";
+import SignUp from "./pages/signup/signUp";
+import Dashboard from "./pages/dashboard/dashboard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { Navigate } from "react-router-dom";

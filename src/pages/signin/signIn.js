@@ -12,10 +12,10 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
-import logo from "./assets/logodesign2.png";
+import logo from "../../assets/logodesign2.png";
 
 import { Link, useNavigate } from "react-router-dom";
-import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
+import { setLocalStorageItem } from "../../utils/utility";
 
 const SignIn = () => {
   const navigate = useNavigate();

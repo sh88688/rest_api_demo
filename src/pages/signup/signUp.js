@@ -9,10 +9,8 @@ import {
   Paper,
 } from "@mui/material";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
-import { Alert } from "@mui/material";
-
 import { Link } from "react-router-dom";
-import logo from "./assets/logodesign2.png";
+import logo from "../../assets/logodesign2.png";
 
 const SignUp = ({ registerUser }) => {
   const [username, setUsername] = useState("");
@@ -68,10 +66,7 @@ const SignUp = ({ registerUser }) => {
                 justifyContent: "center",
               }}
             >
-              <img
-                style={{ width: "50px", height: "50px" }}
-                src={logo}
-              />
+              <img style={{ width: "50px", height: "50px" }} src={logo} />
               <Typography
                 variant="h6"
                 noWrap
