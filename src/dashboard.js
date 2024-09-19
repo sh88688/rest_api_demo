@@ -75,7 +75,7 @@ const Dashboard = () => {
     setTimeout(() => {
       setLocalStorageItem("user-data", null);
       setLoggingOut(false);
-      navigate("/signIn");
+      navigate("/");
     }, 1500);
   };
 

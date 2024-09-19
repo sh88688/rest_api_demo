@@ -14,7 +14,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route
-          path="/signIn"
+          path="/"
           element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignIn />}
         />
         <Route path="/signUp" element={<SignUp />} />
@@ -25,7 +25,7 @@ const App = () => {
         {/* Add a route for not found pages */}
         <Route
           path="*"
-          element={<Navigate to={isLoggedIn ? "/dashboard" : "/signIn"} />}
+          element={<Navigate to={isLoggedIn ? "/dashboard" : "/"} />}
         />
       </Routes>
     </Router>
