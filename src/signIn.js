@@ -12,7 +12,8 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Alert } from "@mui/material";
-import backgroundImage from "./assets/background4.jpg";
+import logo from "./assets/logodesign2.png";
+
 import { Link, useNavigate } from "react-router-dom";
 import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
 
@@ -56,7 +57,7 @@ const SignIn = () => {
     <Box
       sx={{
         height: "100vh",
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: " ",
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "center",
@@ -90,8 +91,9 @@ const SignIn = () => {
               }}
             >
               <img
-                style={{ width: "56px", height: "56px" }}
-                src="https://cryptologos.cc/logos/uniswap-uni-logo.png"
+                style={{ width: "50px", height: "50px" }}
+                src={logo}
+                alt="NA"
               />
               <Typography
                 variant="h6"

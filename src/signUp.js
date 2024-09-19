@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { Alert } from "@mui/material";
-import backgroundImage from "./assets/background4.jpg";
+
 import { Link } from "react-router-dom";
+import logo from "./assets/logodesign2.png";
 
 const SignUp = ({ registerUser }) => {
   const [username, setUsername] = useState("");
@@ -34,7 +35,7 @@ const SignUp = ({ registerUser }) => {
     <Box
       sx={{
         height: "100vh",
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: " ",
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "center",
@@ -68,8 +69,8 @@ const SignUp = ({ registerUser }) => {
               }}
             >
               <img
-                style={{ width: "56px", height: "56px" }}
-                src="https://cryptologos.cc/logos/uniswap-uni-logo.png"
+                style={{ width: "50px", height: "50px" }}
+                src={logo}
               />
               <Typography
                 variant="h6"
