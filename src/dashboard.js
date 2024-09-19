@@ -27,6 +27,8 @@ import Collapse from "@mui/material/Collapse";
 import axios from "axios";
 import { setLocalStorageItem, getLocalStorageItem } from "./utils/utility";
 import { useNavigate } from "react-router-dom";
+import logo from "./assets/logo1.png";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -66,7 +68,7 @@ const Dashboard = () => {
       setTimeout(() => {
         setCategoryLoading(false);
         setOpenCategory(!openCategory);
-      }, 1000);
+      },500);
     }
   };
 
@@ -86,7 +88,7 @@ const Dashboard = () => {
         position="static"
         style={{
           background:
-            "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)",
+            "black"
         }}
       >
         <Toolbar>
@@ -100,7 +102,8 @@ const Dashboard = () => {
           </IconButton>
           <img
             style={{ width: "56px", height: "56px" }}
-            src="https://cryptologos.cc/logos/uniswap-uni-logo.png"
+            src={logo}
+            alt="NA"
           />
           <Typography
             variant="h6"
